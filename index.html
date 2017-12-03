@@ -21,6 +21,10 @@
         crossorigin="anonymous"></script> -->
     <!-- ============ END BOOTSTRAP =========== -->
 
+    <!-- JQuery Link -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+        crossorigin="anonymous"></script>
+
     <!-- links local css -->
     <link type="text/css" rel="styesheet" href="assets/css/style.css">
 
@@ -30,10 +34,17 @@
 
 <body>
     <form>
-        <input type="radio" name="test" value="A">A<br>
-        <input type="radio" name="test" value="B">B<br>
-        <input type="radio" name="test" value="C">C<br>
+        <input type="radio" name="test" value="A" id="radio 0"><p id = "radio-0" style="width: 100px; margin: 0 auto; float: right;">A</p>
+        <br>
+        <input type="radio" name="test" value="B">B
+        <br>
+        <input type="radio" name="test" value="C">C
+        <br>
     </form>
+    <button id="b1">
+        submit
+    </button>
+
 
 </body>
 
