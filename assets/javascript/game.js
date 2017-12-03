@@ -6,7 +6,7 @@ class Question {
         this._question = question;
         this._answer = answer;
         this.falseOne = falseOne;
-        this._falseTwo= falseTwo;
+        this._falseTwo = falseTwo;
     }
 
     get question() {
@@ -27,6 +27,9 @@ var game = {
 
     // This array is used to shuffle the questions array
     newQuestions: [],
+
+    // This array holds the Question Objects after their creation
+    final: [],
 
     // Randomizes the Trivia Questions
     shuffle: function () {
@@ -72,32 +75,49 @@ var game = {
             // Back to top x7
         }
 
-        // SHuffle done
+        // Shuffle done
     },
 
     // Initialize questions array at load
     reset: function () {
-        game.questions = [["question0", "answer0", "false0.0", "false0.1"], ["question1", "answer1", "false1.0", "false1.1"], ["question2", "answer2", "false2.0", "false2.1"], ["question3", "answer3", "false3.0", "false3.1"], ["question4", "answer4", "false4.0", "false4.1"]];
+        game.questions = [
+            ["question0", "answer0", "false0.0", "false0.1"],
+            ["question1", "answer1", "false1.0", "false1.1"],
+            ["question2", "answer2", "false2.0", "false2.1"],
+            ["question3", "answer3", "false3.0", "false3.1"],
+            ["question4", "answer4", "false4.0", "false4.1"]
+        ];
     },
 
+    createQuestions: function () {
+        // Create the First Trivia Question 
+        const q0 = new Question(game.questions[0][0], game.questions[0][1], game.questions[0][2], game.questions[0][3]);
+        console.log(q0);
+        const q1 = new Question(game.questions[1][0], game.questions[1][1], game.questions[1][2], game.questions[1][3]);
+        console.log(q1);
+        const q2 = new Question(game.questions[2][0], game.questions[2][1], game.questions[2][2], game.questions[2][3]);
+        console.log(q2);
+        const q3 = new Question(game.questions[3][0], game.questions[3][1], game.questions[3][2], game.questions[3][3]);
+        console.log(q3);
+        const q4 = new Question(game.questions[4][0], game.questions[4][1], game.questions[4][2], game.questions[4][3]);
+        console.log(q4);
+        game.final = [q0, q1, q2, q3, q4];
+    }
 }
 game.reset();
 game.shuffle();
+game.createQuestions();
 
-// Create the First Trivia Question 
-const q0 = new Question(game.questions[0][0], game.questions[0][1], game.questions[0][2], game.questions[0][3]);
-console.log(q0);
-const q1 = new Question(game.questions[1][0], game.questions[1][1], game.questions[1][2], game.questions[1][3]);
-console.log(q1);
-const q2 = new Question(game.questions[2][0], game.questions[2][1], game.questions[2][2], game.questions[2][3]);
-console.log(q2);
-const q3 = new Question(game.questions[3][0], game.questions[3][1], game.questions[3][2], game.questions[3][3]);
-console.log(q3);
-const q4 = new Question(game.questions[4][0], game.questions[4][1], game.questions[4][2], game.questions[4][3]);
-console.log(q4);
 
-$(document).ready(function() {
-    $("#b1").on("click", function(){
+
+$(document).ready(function () {
+    $("#b1").on("click", function () {
+
+        let radios = ["#radio-0", "#radio-1", "#radio-2"];
+        $("#radio-0").text(q0._answer);
+        console.log("test");
+        $("#radio-0").text(q0._answer);
+        console.log("test");
         $("#radio-0").text(q0._answer);
         console.log("test");
     })
