@@ -8,20 +8,14 @@ class Question {
         this._falseOne = falseOne;
         this._falseTwo = falseTwo;
     }
-
-    get question() {
-        return this._question;
-    }
-
-    get answer() {
-        return this._answer;
-    }
 }
 
 // Game Object
 var game = {
     score: 0,
     count: 0,
+    timer: 0,
+    interval: 0,
 
     // This array holds question-answer packets
     questions: [],
@@ -32,6 +26,7 @@ var game = {
     // This array holds the Question Objects after their creation
     final: [],
 
+    // Arrays used to shuffle the order in which button values are assigned
     choices: [],
 
     choiceMix: [],
@@ -47,7 +42,6 @@ var game = {
 
                 // Chooses randomly between 1 and 0
                 var rng = Math.floor(Math.random() * 2);
-                // console.log(rng);
 
                 // If 1
                 if (rng === 1) {
@@ -55,8 +49,6 @@ var game = {
                     // Take from the front of the questions array 
                     var transfer = game.questions.shift([rng]);
                     game.newQuestions.push(transfer);
-                    // console.log(transfer);
-                    // console.log(game.newQuestions);
 
                     // if 0
                 } else if (rng === 0) {
@@ -64,12 +56,11 @@ var game = {
                     // Take from the end of the questions array
                     var transfer = game.questions.pop([rng]);
                     game.newQuestions.push(transfer);
-                    // console.log(transfer);
-                    // console.log(game.newQuestions);
 
                     // paranoia
                 } else {
-                    game.shuffle();
+
+                    return
                 }
             }
 
@@ -88,80 +79,104 @@ var game = {
         game.questions = [
             ["What kind of language is Javascript?", "Interpreted", "Compiled", "Low-Level"],
             ["Which year was the first message sent over the Internet?", "1969", "1972", "1968"],
-            ["What is a recursive function?", "A function which calls itself", "A function which is called in another function", "A function which is called in a loop"],
+            ["A recursive function...", "Calls itself", "Is called in another function", "Is called in a loop"],
             ["What is the output of: [return ((true + 3) + 'true') + (5 * false)]", "'4true0'", "5", "true"],
             ["What does ';' do in Javascript?", "Separates statements", "Causes an evaluation", "Causes a return"]
         ];
     },
 
     createQuestions: function () {
-        // Create the First Trivia Question 
-        var q0 = new Question(game.questions[0][0], game.questions[0][1], game.questions[0][2], game.questions[0][3]);
-        console.log(q0);
-        var q1 = new Question(game.questions[1][0], game.questions[1][1], game.questions[1][2], game.questions[1][3]);
-        console.log(q1);
-        var q2 = new Question(game.questions[2][0], game.questions[2][1], game.questions[2][2], game.questions[2][3]);
-        console.log(q2);
-        var q3 = new Question(game.questions[3][0], game.questions[3][1], game.questions[3][2], game.questions[3][3]);
-        console.log(q3);
-        var q4 = new Question(game.questions[4][0], game.questions[4][1], game.questions[4][2], game.questions[4][3]);
-        console.log(q4);
-        game.final = [q0, q1, q2, q3, q4];
+        // Creates question objects from the list, loads them into final array
+        for (let x = 0; x < game.questions.length; x++) {
+            game.final.push(new Question(game.questions[x][0], game.questions[x][1], game.questions[x][2], game.questions[x][3]));
+        }
     },
 
+    // Mixes the order in which options appear 
     mix: function () {
 
-        // game.choices = [0, 1, 2];
-        // game.choiceMix = [];
-        console.log(game.choices);
+        // Shuffles 6 times
         for (let a = 0; a < 6; a++) {
-            for (var l = 3; l > 0; l--) {
-                let flip = Math.floor(Math.random() * 2);
-                // console.log("flip: " + flip);
 
+            // Core shuffle logic
+            for (var l = 3; l > 0; l--) {
+
+                // Generates a random number between 0 and 1
+                let flip = Math.floor(Math.random() * 2);
+
+                // If 0
                 if (flip === 0) {
+
+                    // Take from the front of the array
                     let xfer = game.choices.shift();
-                    // console.log("Shifted: " + xfer);
                     if (typeof xfer === "string") {
                         game.choiceMix.push(xfer)
+
+                        // Prevents invalid returns
                     } else {
+
                         console.log("failed")
-                        return;
+                        return
+
                     }
-                    ;
+
+                    // if 1
                 } else if (flip === 1) {
+
+                    // Take from the back of the array
                     let xfer = game.choices.pop();
-                    // console.log("popped: " + xfer);
                     if (typeof xfer === "string") {
                         game.choiceMix.push(xfer)
                     } else {
+
+                        // Prevents invalid returns
                         console.log("failed")
-                        return;
+                        return
                     }
                 } else {
-                    return;
+
+                    return
                 }
-                // console.log(game.choiceMix);
+
 
             }
+
+            // Moves shuffled choices back into their array
             game.choices = game.choiceMix;
             game.choiceMix = [];
         }
     },
+
+    // Handles the interaction between the question objects and the radio buttons, uses mix() to shuffle positions, takes in question objecs
     render: function (question) {
+
+        // Clear choice array
         game.choices = [];
-        // console.log(game.choices);
-        // console.log(question._answer);
+
+        // Reset timer
+        game.timer = 30;
+
+
+        // Loads the possible responses into choice array
         game.choices.push(question._answer);
-        // console.log(question._falseOne);
         game.choices.push(question._falseOne);
-        // console.log(question._falseTwo);
         game.choices.push(question._falseTwo);
-        // console.log(question._falseTwo);
-        // console.log(game.choices);
+
+        // Mix() called on choice array
         game.mix();
-        // console.log(game.choices);
+
+        // Renders current question
         $("#question-holder").text(question._question);
+
+        game.interval = setInterval(function () {
+            game.timer--;
+            $("#time-holder").text("Seconds left: " + game.timer);
+            if (game.timer === 0) {
+                game.check();
+            }
+        }, 1000);
+
+        // Sets responses to radio buttons
         $("#txt-0").text(game.choices[0]);
         $("#radio-0").attr("value", game.choices[0]);
         $("#txt-1").text(game.choices[1]);
@@ -169,34 +184,73 @@ var game = {
         $("#txt-2").text(game.choices[2]);
         $("#radio-2").attr("value", game.choices[2]);
     },
+
+    // Checks answers
     check: function (target) {
 
+        clearInterval(game.interval);
         target = $("#result").val()
         console.log(target)
+
+        // If answer is correct
         if ($("#result").val() === game.final[game.count]._answer) {
+            // Add one to score
             game.score++;
-            console.log("game count " + game.count);
-            console.log("score: " + game.score);
+            $("#score-holder").text("Score : " + game.score);
+            $("#question-holder").text("Correct!");
+            clearInterval(game.interval);
+            setTimeout(function(){
+                $("#question-holder").text("Your Response: " + game.final[game.count -1]._answer);
+            }, 1500)
+
+            // If answer is wrong
         } else if ($("#result").val() != game.final[game.count]._answer) {
-            console.log("-1");
-            game.score--;
-            console.log("score: " + game.score);
+
+            $("#question-holder").text("Wrong!");
+            clearInterval(game.interval);
+            setTimeout(function(){
+                $("#question-holder").text("Correct Response: " + game.final[game.count -1]._answer);
+            }, 1500)
         }
+
+        // Move to the next question object
         game.count++;
+        if (game.count === 1) {
+            $(".progress-bar").css("width", "20%");
+        } else if (game.count === 2) {
+            $(".progress-bar").css("width", "40%");
+        } else if (game.count === 3) {
+            $(".progress-bar").css("width", "60%");
+        } else if (game.count === 4) {
+            $(".progress-bar").css("width", "80%");
+        } else if (game.count === 1) {
+            $(".progress-bar").css("width", "100%");
+        }
+
+        // End case
         if (game.count === 5) {
             console.log("test");
-            $("html").text(game.score);
+            $("html").html("<h1 style='text-align: center'>You answered " + game.score +" questions correctly!</h1> <br> <a style='text-align: center' href='index.html'><h1>Try Again!</h1></a>");
             return;
         }
-        console.log("game count " + game.count);
-        console.log(game.count);
-        game.render(game.final[game.count]);
-        
-        $('input[type=radio]').prop('checked', function () {
-            return this.getAttribute('checked') == 'checked';
-        });
 
-        $("#result").val("");
+        $('#b1, #result').css('display', 'none');
+
+        setTimeout(function () {
+            // Renders next question object
+            game.render(game.final[game.count]);
+
+            // Clears radio buttons 
+            $('input[type=radio]').prop('checked', function () {
+                return this.getAttribute('checked') == 'checked';
+            });
+
+            $('#b1').css('display', 'initial');
+
+            // Clears result 
+            $("#result").val("");
+        }, 4000)
+
     }
 
 
@@ -210,12 +264,27 @@ game.createQuestions();
 
 
 
-
+// JQ stoof
 $(document).ready(function () {
+
+    $("#score-holder").text("Score : " + game.score);
+    $(".progress-bar").css("width", "0%");
+
+    // Picks question objects in order from the shuffled arrays, using game.count to iterate
     game.render(game.final[game.count]);
+
+    // Moves the value of the radio button click into result
+    $('input[type=radio]').on("click", function () {
+        document.getElementById('result').value = $(this).val();
+    });
+
+
+    // Submit button, runs the .check function, passing the value of the result in
     $("#b1").on("click", function () {
 
         game.check($("#result").val());
 
     })
 });
+
+

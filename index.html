@@ -6,57 +6,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-
-    <!-- ============== BOOTSTRAP ============= -->
-    <!-- Latest compiled and minified CSS -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-        crossorigin="anonymous">
-
-    <!-- Optional theme -->
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
-        crossorigin="anonymous"> -->
-
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script> -->
-    <!-- ============ END BOOTSTRAP =========== -->
+    
 
     <!-- JQuery Link -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
         crossorigin="anonymous"></script>
+    <!-- ============== BOOTSTRAP ============= -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
 
-    <!-- links local css -->
-    <link type="text/css" rel="styesheet" href="assets/css/style.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+        crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+    <!-- ============ END BOOTSTRAP =========== -->
+
+    
 
     <!-- links local JS -->
     <script type="text/javascript" src="assets/javascript/game.js"></script>
+
+    <!-- links local css -->
+    <link  rel="stylesheet" href="assets/css/style.css" type="text/css">
+    
 </head>
 
 <body>
-    <div id="question-holder">
+
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-sm-3" id="score-holder"></div>
+
+            <div class="col-sm-6">
+
+                <div id="question-holder"></div>
+
+            </div>
+            <div class="col-sm-3" id="time-holder" style="margin-top:30px"></div>
+        </div>
+        <br>
+        <br>
+        <div class="container" id="main">
+            <div class="row">
+                <form id="raido-choices" value="test"></form>
+                <div class="row" style="width: 50%; margin: 0 auto;">
+
+                    <div class="row">
+                        <input style="float:left" type="radio" name="test" value="A" id="radio-0" class="radios">
+                        <p id="txt-0" style="width: 90%; margin: 0 auto; float: left;">A</p>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <input style="float:left" type="radio" name="test" value="B" id="radio-1" class="radios">
+                        <p id="txt-1" style="width: 90%; margin: 0 auto; float: left;">B</p>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <input style="float:left" type="radio" name="test" value="C" id="radio-2" class="radios">
+                        <p id="txt-2" style="width: 90%; margin: 0 auto; float: left;">C</p>
+                    </div>
+                </div>
+
+                </form>
+                <br>
+                <br>
+                <br>
+
+            </div>
+            <div class="row">
+
+                <div class="col-sm-3"></div>
+
+                <div class="col-sm-6">
+                    <input type="text" id="result">
+                    <button id="b1">
+                        submit
+                    </button>
+
+                </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </div>
+
+        <br>
+        <footer>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+        </footer>
 
     </div>
-    <br>
-    <form id="raido-choices" value="test">
-        <input style="float:left" onclick="document.getElementById('result').value = $(this).val(); console.log($(this).val());"
-            type="radio" name="test" value="A" id="radio-0">
-        <p id="txt-0" style="width: 100px; margin: 0 auto; float: left;">A</p>
-        <br>
-        <input style="float:left" onclick="document.getElementById('result').value = $(this).val(); console.log($('#radio-1').val());"
-            type="radio" name="test" value="B" id="radio-1">
-        <p id="txt-1" style="width: 100px; margin: 0 auto; float: left;">B</p>
-        <br>
-        <input style="float:left" onclick="document.getElementById('result').value = $(this).val(); console.log($(this).val());"
-            type="radio" name="test" value="C" id="radio-2">
-        <p id="txt-2" style="width: 100px; margin: 0 auto; float: left;">C</p>
-        <br>
-        <!-- <input style="display: none;" type="radio" name="test" value="0" id="radio-reset"> -->
-        <input type="text" id="result">
-        <!-- <input type="submit" value="Submit form"> -->
-    </form>
-    <button id="b1">
-        submit
-    </button>
 
 
 </body>
